@@ -2,24 +2,7 @@
 <grammar xmlns="http://relaxng.org/ns/structure/1.0"
     xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
     datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-    <define name="classification">
-        <element name="classification">
-            <a:documentation>This element stores the core-structure “classification” element with
-                which a data category must be associated.</a:documentation>
-            <choice>
-                <value>admin</value>
-                <value>adminNote</value>
-                <value>descrip</value>
-                <value>descripNote</value>
-                <value>termNote</value>
-                <value>transac</value>
-                <value>transacNote</value>
-                <value>ref</value>
-                <value>xref</value>
-            </choice>
-        </element>
-    </define>
-
+    
     <define name="contents">
         <element name="contents">
             <a:documentation>If the permitted contents of a data category are picklist values, they
