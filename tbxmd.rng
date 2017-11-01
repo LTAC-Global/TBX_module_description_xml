@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <define name="classification">
+        <element name="classification">
+            <a:documentation>This element stores the core-structure “classification” element with
+                which a data category must be associated.</a:documentation>
+            <choice>
+                <value>admin</value>
+                <value>adminNote</value>
+                <value>descrip</value>
+                <value>descripNote</value>
+                <value>termNote</value>
+                <value>transac</value>
+                <value>transacNote</value>
+                <value>ref</value>
+                <value>xref</value>
+            </choice>
+        </element>
+    </define>
+
+    <define name="contents">
+        <element name="contents">
+            <a:documentation>If the permitted contents of a data category are picklist values, they
+                will be placed here in &lt;value&gt; tags. Any other data category must select from
+                one of the 4 permitted text datatypes as described in Section 9.5 of ISO
+                30042.</a:documentation>
+            <choice>
+                <group>
+                    <ref name="datatype.general"/>
+                    <optional>
+                        <ref name="targetType"/>
+                    </optional>
+                    <empty/>
+                </group>
+                <group>
+                    <ref name="datatype.picklist"/>
+                    <oneOrMore>
+                        <ref name="value"/>
+                    </oneOrMore>
+                </group>
+            </choice>
+        </element>
+    </define>
+    <define name="datatype.general">
+        <attribute name="datatype">
+            <a:documentation>The values permitted here are found in ISO 30042.</a:documentation>
+            <choice>
+                <value>PCDATA</value>
+                <value>basicText</value>
+                <value>noteText</value>
+            </choice>
+        </attribute>
+    </define>
+    <define name="datatype.picklist">
+        <attribute name="datatype">
+            <value>picklist</value>
+        </attribute>
+    </define>
+    <define name="datCatSet">
+        <element name="datCatSet">
+            <a:documentation>: This element contains the collection of permitted data categories in
+                the module.</a:documentation>
+            <oneOrMore>
+                <ref name="datCatSpec"/>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="datCatSpec">
+        <choice>
+            <element name="adminSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
+            <element name="adminNoteSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
+            <element name="descripSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
+            <element name="descripNoteSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
+            <element name="termNoteSpec">
+                <ref name="termNoteSpec.content"/>
+            </element>
+            <element name="transacSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
+            <element name="transacNoteSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
+        </choice>
+    </define>
+    <define name="datCatSpec.content">
+        <a:documentation>This element is used to provide all necessary information to describe a
+            single data category.</a:documentation>
+        <ref name="datCatSpec.attributes"/>
+        <ref name="levels"/>
+        <ref name="contents"/>
+    </define>
+    <define name="datCatSpec.attributes">
+        <attribute name="name">
+            <a:documentation>This is the name of the data category</a:documentation>
+            <text/>
+        </attribute>
+        <attribute name="datcatId">
+            <a:documentation>This is the URI pointing to the source of the data category. For
+                standard data categories found on www.datcatinfo.net, this is the
+                PID.</a:documentation>
+            <data type="anyURI"/>
+        </attribute>
+    </define>
+    <define name="description">
+        <element name="description">
+            <a:documentation>A description of the module being described</a:documentation>
+            <text/>
+        </element>
+    </define>
+
+    <define name="header">
+        <element name="header">
+            <a:documentation>Container for header information.</a:documentation>
+            <ref name="title"/>
+            <optional>
+                <ref name="description"/>
+            </optional>
+        </element>
+    </define>
+    <define name="level">
+        <element name="level">
+            <choice>
+                <value>conceptEntry</value>
+                <value>langSec</value>
+                <value>termSec</value>
+            </choice>
+        </element>
+    </define>
+    <define name="levels">
+        <element name="levels">
+            <a:documentation>The levels in which the data category may occur.</a:documentation>
+            <oneOrMore>
+                <ref name="level"/>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="tbxmd">
+        <element name="tbxmd">
+            <a:documentation>The root element of an MDF file.</a:documentation>
+            <attribute name="module">
+                <a:documentation>This is the name of the module</a:documentation>
+                <text/>
+            </attribute>
+            <attribute name="ns">
+                <a:documentation>This is the namespace of the module (for use in DCT style TBX
+                    files)</a:documentation>
+                <data datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="anyURI"/>
+            </attribute>
+            <ref name="header"/>
+            <ref name="datCatSet"/>
+        </element>
+    </define>
+    <define name="targetType">
+        <attribute name="targetType">
+            <choice>
+               <value>bibl</value>
+               <value>binaryData</value>
+               <value>conceptSysDescrip</value>
+               <value>element</value>
+                <value>entry</value>
+                <value>external</value>
+                <value>respPerson</value>
+                <value>term</value>
+                <value>thesaurusDescrip</value>
+            </choice>
+        </attribute>
+    </define>
+    <define name="termNoteSpec.content">
+        <ref name="datCatSpec.attributes"/>
+        <ref name="contents"/>
+    </define>
+    <define name="title">
+        <element name="title">
+            <a:documentation>This element is used to provide a more descriptive name for a module,
+                in contrast to the simple name given in the @module attribute of
+                &lt;mdf&gt;></a:documentation>
+            <text/>
+        </element>
+    </define>
+    <define name="value">
+        <element name="value">
+            <a:documentation>A &lt;value&gt; element contains a specific allowed instance of text
+                for a given data category. For example, if the data category is /partOfSpeech/, one
+                of the &lt;value&gt; elements in the &lt;contents&gt; section would be:
+                &lt;value&gt;noun&lt;/value&gt;</a:documentation>
+            <text/>
+        </element>
+    </define>
+
+    <start>
+        <ref name="tbxmd"/>
+    </start>
+</grammar>
