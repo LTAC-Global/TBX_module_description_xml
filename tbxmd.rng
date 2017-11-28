@@ -64,6 +64,9 @@
             <element name="descripNoteSpec">
                 <ref name="datCatSpec.content"/>
             </element>
+            <element name="refSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
             <element name="termNoteSpec">
                 <ref name="termNoteSpec.content"/>
             </element>
@@ -71,6 +74,9 @@
                 <ref name="datCatSpec.content"/>
             </element>
             <element name="transacNoteSpec">
+                <ref name="datCatSpec.content"/>
+            </element>
+        <element name="xrefSpec">
                 <ref name="datCatSpec.content"/>
             </element>
         </choice>
